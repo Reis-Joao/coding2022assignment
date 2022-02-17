@@ -1,0 +1,17 @@
+OLS Estimation of Total Goals on Total Shots on Target and Total Shots w/ Interaction Term	
+	(1)
+VARIABLES	total_goals
+	
+total_shots_on_target	0.15850
+	(0.13137)
+total_shots	0.05991
+	(0.05788)
+interaction_term_shots	-0.00206
+	(0.00449)
+Constant	-0.04250
+	(1.39367)
+	
+Observations	96
+R-squared	0.12878
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	

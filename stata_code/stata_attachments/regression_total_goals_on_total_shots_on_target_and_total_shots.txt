@@ -1,0 +1,15 @@
+OLS Estimation of Total Goals on Total Shots on Target and Total Shots	
+	(1)
+VARIABLES	total_goals
+	
+total_shots_on_target	0.09788**
+	(0.04407)
+total_shots	0.03806
+	(0.03336)
+Constant	0.57109
+	(0.66781)
+	
+Observations	96
+R-squared	0.12728
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	
