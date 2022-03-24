@@ -12,38 +12,40 @@ ssc install isvar
 ssc describe outreg2
 ssc install outreg2
 
+*Creating a global to the directory*
+ global datadir "C:/Users/João Reis/Desktop/codingassignment/coding_assignment_joaoreis"
 
 *-------------------------------------------- SECOND PART: Convert data from .csv to .dta --------------------------------------------* 
 
-* Creating a new directory to save the raw .csv data as .dta data, so we can append them easily later. IF YOU HAVE ALREADY THE DIRECTORY, DO NOT RUN THIS LINE *
-mkdir "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/footballdata/raw_dta"
+* Creating a new directory to save the raw .csv data as .dta data, so we can append them easily later*
+capture mkdir "${datadir}/footballdata/raw_dta"
 
 * Importing the files as .csv and saving them as .dta
 forvalues k = 2008(1)2018{
-	import delimited C:\Users\Reis_Joao\Desktop\codingassignment\coding_assignment_joaoreis\footballdata\raw\fdata_pl_`k'.csv, clear varnames(1) bindquotes(strict) encoding("utf-8")
-	save C:\Users\Reis_Joao\Desktop\codingassignment\coding_assignment_joaoreis\footballdata\raw_dta\fdata_pl_`k'.dta, replace
+	import delimited "${datadir}\footballdata\raw\fdata_pl_`k'.csv", clear varnames(1) bindquotes(strict) encoding("utf-8")
+	save "${datadir}\footballdata\raw_dta\fdata_pl_`k'.dta", replace
 }
 
 * Saving the data
-save "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/data_final.dta", replace
+save "${datadir}/stata_code/data_final.dta", replace
 
 
 *-------------------------------------------- THIRD PART: Merging different datasets --------------------------------------------* 
 
 *Importing the data
-use "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/footballdata/raw_dta/fdata_pl_2008.dta", clear
+use "${datadir}/footballdata/raw_dta/fdata_pl_2008.dta", clear
 
 *Generating a variable to append the documents
 generate season = 2008
 
 *Appending all the data from 2008 to 2018 into one document
 forvalues k = 2009(1)2018{
-	append using "C:\Users\Reis_Joao\Desktop\codingassignment\coding_assignment_joaoreis\footballdata\raw_dta\fdata_pl_`k'.dta"
+	append using "${datadir}\footballdata\raw_dta\fdata_pl_`k'.dta"
 	replace season = `k' if missing(season)
 }
 
 * Saving the data
-save "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/data_final.dta", replace
+save "${datadir}/stata_code/data_final.dta", replace
 
 
 *-------------------------------------------- FOURTH PART: Cleaning the data --------------------------------------------* 
@@ -75,13 +77,13 @@ gen month = real(substr(date, 4, 2))
 drop if day != 26 | month != 12
 
 * Saving the data
-save "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/data_final.dta", replace
+save "${datadir}/stata_code/data_final.dta", replace
 
 
 *-------------------------------------------- FIFTH PART: Work with the data --------------------------------------------* 
 
-* Creating a new directory to save the save the regressions/graphs. IF YOU HAVE ALREADY THE DIRECTORY, DO NOT RUN THIS LINE *
-mkdir "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments"
+* Creating a new directory to save the save the regressions/graphs*
+capture mkdir "${datadir}/stata_code/stata_attachments"
 
 * Creating a variable of total goals scored on the matches
 gen total_goals = fthg + ftag
@@ -112,33 +114,33 @@ sum total_shots_on_target, detail
 
 * Some regressions and graphs on the relation between the goals, the shots and the shots on target
 reg total_goals total_shots, robust
-outreg2 using "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/regression_total_goals_on_total_shots", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots")
+outreg2 using "${datadir}/stata_code/stata_attachments/regression_total_goals_on_total_shots", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots")
 
 reg total_goals total_shots_on_target, robust
-outreg2 using "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/regression_total_goals_on_total_shots_on_target", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots on Target")
+outreg2 using "${datadir}/stata_code/stata_attachments/regression_total_goals_on_total_shots_on_target", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots on Target")
 
 reg total_shots_on_target total_shots, robust
-outreg2 using "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/regression_total_shots_on_target_on_total_shots", replace excel dec(5) title("OLS Estimation of Total Shots on Target on Total Shots")
+outreg2 using "${datadir}/stata_code/stata_attachments/regression_total_shots_on_target_on_total_shots", replace excel dec(5) title("OLS Estimation of Total Shots on Target on Total Shots")
 
 reg total_goals total_shots_on_target total_shots, robust
-outreg2 using "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/regression_total_goals_on_total_shots_on_target_and_total_shots", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots on Target and Total Shots")
+outreg2 using "${datadir}/stata_code/stata_attachments/regression_total_goals_on_total_shots_on_target_and_total_shots", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots on Target and Total Shots")
 
 gen interaction_term_shots = total_shots * total_shots_on_target
 
 reg total_goals total_shots_on_target total_shots interaction_term_shots, robust
-outreg2 using "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/regression_total_goals_on_total_shots_on_target_and_total_shots_int_term", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots on Target and Total Shots w/ Interaction Term")
+outreg2 using "${datadir}/stata_code/stata_attachments/regression_total_goals_on_total_shots_on_target_and_total_shots_int_term", replace excel dec(5) title("OLS Estimation of Total Goals on Total Shots on Target and Total Shots w/ Interaction Term")
 
 scatter total_goals total_shots || lfit total_goals total_shots, title("Relation Between Goals and Shots") xtitle("Total Shots") ytitle("Total Goals") 
-graph export "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/scatter_plot_goals_shots.pdf", as(pdf) name("Graph") replace
+graph export "${datadir}/stata_code/stata_attachments/scatter_plot_goals_shots.pdf", as(pdf) name("Graph") replace
 
 scatter total_goals total_shots_on_target || lfit total_goals total_shots_on_target, title("Relation Between Goals and Shots on Target") xtitle("Total Shots on Target") ytitle("Total Goals")
-graph export "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/scatter_plot_goals_shotsontarget.pdf", as(pdf) name("Graph") replace
+graph export "${datadir}/stata_code/stata_attachments/scatter_plot_goals_shotsontarget.pdf", as(pdf) name("Graph") replace
 
 scatter total_shots_on_target total_shots || lfit total_shots_on_target total_shots, title("Relation Between Shots on Target and Shots") xtitle("Total Shots") ytitle("Total Shots on Target")
-graph export "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/stata_attachments/scatter_plot_shots_shotsontarget.pdf", as(pdf) name("Graph") replace
+graph export "${datadir}/stata_code/stata_attachments/scatter_plot_shots_shotsontarget.pdf", as(pdf) name("Graph") replace
 
 * Saving the data
-save "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/data_final.dta", replace
+save "${datadir}/stata_code/data_final.dta", replace
 
 
 
