@@ -25,4 +25,4 @@ gen month = real(substr(date, 4, 2))
 drop if day != 26 | month != 12
 
 * Saving the data
-save "C:/Users/Reis_Joao/Desktop/codingassignment/coding_assignment_joaoreis/stata_code/data_final.dta", replace
+save "${datadir}/stata_code/data_final.dta", replace

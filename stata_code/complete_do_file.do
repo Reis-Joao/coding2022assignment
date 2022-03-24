@@ -12,10 +12,10 @@ ssc install isvar
 ssc describe outreg2
 ssc install outreg2
 
+*-------------------------------------------- SECOND PART: Convert data from .csv to .dta --------------------------------------------* 
+
 *Creating a global to the directory*
  global datadir "C:/Users/João Reis/Desktop/codingassignment/coding_assignment_joaoreis"
-
-*-------------------------------------------- SECOND PART: Convert data from .csv to .dta --------------------------------------------* 
 
 * Creating a new directory to save the raw .csv data as .dta data, so we can append them easily later*
 capture mkdir "${datadir}/footballdata/raw_dta"
