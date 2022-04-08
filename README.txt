@@ -6,4 +6,4 @@ The original data was taken from https://gabors-data-analysis.com/datasets/ , mo
 
 IMPORTANT:
 
--> In every code, make sure to change your directories. Also, in the do files (stata), there are two lines to create a new directory. If you already have it, do not run those lines (all the necessary instructions are commented on the .do files themselves).
+-> In every code, make sure to change your directories
